@@ -13,36 +13,25 @@ class Unite
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 150)]
-    private ?string $nom = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 3)]
     private ?string $numero = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $numeroUnite = null;
+    #[ORM\Column(length: 20)]
+    private ?string $statut = 'libre';
 
-    #[ORM\Column(length: 255)]
-    private ?string $etat = null;
+    #[ORM\Column(length: 20)]
+    private ?string $etat = 'OK';
 
-    #[ORM\Column(length: 255)]
-    private ?string $statut = null;
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $nomPersonnalise = null;
+
+    #[ORM\ManyToOne(inversedBy: 'unites')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Baie $baie = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): static
-    {
-        $this->nom = $nom;
-
-        return $this;
     }
 
     public function getNumero(): ?string
@@ -53,31 +42,6 @@ class Unite
     public function setNumero(string $numero): static
     {
         $this->numero = $numero;
-
-        return $this;
-    }
-
-    public function getNumeroUnite(): ?string
-    {
-        return $this->numeroUnite;
-    }
-
-    public function setNumeroUnite(string $numeroUnite): static
-    {
-        $this->numeroUnite = $numeroUnite;
-
-        return $this;
-    }
-
-    public function getEtat(): ?string
-    {
-        return $this->etat;
-    }
-
-    public function setEtat(string $etat): static
-    {
-        $this->etat = $etat;
-
         return $this;
     }
 
@@ -89,7 +53,47 @@ class Unite
     public function setStatut(string $statut): static
     {
         $this->statut = $statut;
-
         return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): static
+    {
+        $this->etat = $etat;
+        return $this;
+    }
+
+    public function getNomPersonnalise(): ?string
+    {
+        return $this->nomPersonnalise;
+    }
+
+    public function setNomPersonnalise(?string $nomPersonnalise): static
+    {
+        $this->nomPersonnalise = $nomPersonnalise;
+        return $this;
+    }
+
+    public function getBaie(): ?Baie
+    {
+        return $this->baie;
+    }
+
+    public function setBaie(?Baie $baie): static
+    {
+        $this->baie = $baie;
+        return $this;
+    }
+
+    /**
+     * Retourne l'emplacement complet (ex: B001-U05)
+     */
+    public function getEmplacement(): string
+    {
+        return $this->baie?->getNumero() . '-' . $this->numero;
     }
 }
