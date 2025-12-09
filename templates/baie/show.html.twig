@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Baie {{ baie.numero }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_baie') }}">Baies</a>
+            </li>
+            <li class="breadcrumb-item active">{{ baie.numero }}</li>
+        </ol>
+    </nav>
+
+    <h1>📦 Baie {{ baie.numero }}</h1>
+    
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Informations générales</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Numéro :</dt>
+                <dd class="col-sm-9"><strong>{{ baie.numero }}</strong></dd>
+                
+                <dt class="col-sm-3">Capacité totale :</dt>
+                <dd class="col-sm-9">{{ baie.capaciteTotale }} unités</dd>
+                
+                <dt class="col-sm-3">Unités occupées :</dt>
+                <dd class="col-sm-9">
+                    {% set occupees = baie.unites|filter(u => u.statut == 'occupe')|length %}
+                    <span class="badge bg-danger">{{ occupees }}</span>
+                </dd>
+                
+                <dt class="col-sm-3">Unités libres :</dt>
+                <dd class="col-sm-9">
+                    {% set libres = baie.capaciteTotale - occupees %}
+                    <span class="badge bg-success">{{ libres }}</span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Unités ({{ baie.unites|length }})</h5>
+        </div>
+        <div class="card-body">
+            {% if baie.unites is empty %}
+                <div class="alert alert-warning">
+                    Cette baie n'a pas encore d'unités.
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Numéro</th>
+                                <th>Emplacement</th>
+                                <th>Statut</th>
+                                <th>État</th>
+                                <th>Nom personnalisé</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for unite in baie.unites %}
+                                <tr>
+                                    <td>{{ unite.numero }}</td>
+                                    <td><code>{{ unite.emplacement }}</code></td>
+                                    <td>
+                                        {% if unite.statut == 'libre' %}
+                                            <span class="badge bg-success">Libre</span>
+                                        {% elseif unite.statut == 'occupe' %}
+                                            <span class="badge bg-danger">Occupé</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ unite.statut }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if unite.etat == 'OK' %}
+                                            <span class="badge bg-success">✓ OK</span>
+                                        {% elseif unite.etat == 'incident' %}
+                                            <span class="badge bg-danger">⚠ Incident</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">🔧 Maintenance</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if unite.nomPersonnalise %}
+                                            <em>{{ unite.nomPersonnalise }}</em>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="{{ path('app_baie_index') }}" class="btn btn-secondary">
+            ← Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}
