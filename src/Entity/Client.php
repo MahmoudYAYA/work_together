@@ -13,7 +13,7 @@ class Client
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\UniqueConstraint]
+    
     #[ORM\Column(length: 255)]
     private ?string $email = null;
     
