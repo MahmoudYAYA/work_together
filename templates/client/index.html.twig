@@ -27,7 +27,8 @@
                 <td>{{ client.nom }}</td>
                 <td>{{ client.prenom }}</td>
                 <td>{{ client.password }}</td>
-                <td>{{ client.roles }}</td>
+            {# Client.roles et un tpype json dans la base de données  #}
+                <td>{{ client.roles|join(', ') }}</td>
                 <td>{{ client.dateCreation ? client.dateCreation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ client.actif ? 'Yes' : 'No' }}</td>
                 <td>
