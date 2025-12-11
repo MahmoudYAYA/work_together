@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des offres{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h1>Offres</h1>
+
+    <a href="{{ path('app_offre_new') }}" class="btn btn-primary mb-3">➕ Ajouter une offre</a>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Unités</th>
+                <th>Prix mensuel</th>
+                <th>Prix annuel</th>
+                <th>Réduction</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for offre in offres %}
+            <tr>
+                <td>{{ offre.nom }}</td>
+                <td>{{ offre.nombreUnites }}</td>
+                <td>{{ offre.prixMensuel }} €</td>
+                <td>{{ offre.prixAnnuelle }} €</td>
+                <td>{{ offre.redctionAnnuelle ?? '-' }} %</td>
+                <td>
+                    <a href="{{ path('app_offre_show', {id: offre.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                    <a href="{{ path('app_offre_edit', {id: offre.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">Aucune offre disponible</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
