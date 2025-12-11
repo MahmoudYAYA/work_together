@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offre {{ offre.nom }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <h1> Offre : {{ offre.nom }}</h1>
+
+    <ul class="list-group mb-3">
+        <li class="list-group-item"><strong>Description :</strong> {{ offre.description }}</li>
+        <li class="list-group-item"><strong>Unités :</strong> {{ offre.nombreUnites }}</li>
+        <li class="list-group-item"><strong>Prix mensuel :</strong> {{ offre.prixMensuel }} €</li>
+        <li class="list-group-item"><strong>Prix annuel :</strong> {{ offre.prixAnnuelle }} €</li>
+        <li class="list-group-item"><strong>Réduction :</strong> {{ offre.redctionAnnuelle ?? '-' }} %</li>
+    </ul>
+
+    <a href="{{ path('app_offre_edit', {id: offre.id}) }}" class="btn btn-warning">Modifier</a>
+    <a href="{{ path('app_offre_index') }}" class="btn btn-secondary">Retour</a>
+
+</div>
+{% endblock %}
