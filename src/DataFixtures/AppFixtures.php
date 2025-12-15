@@ -33,7 +33,6 @@ class AppFixtures extends Fixture
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin123'));
         $admin->setNom('Dupont');
         $admin->setPrenom('Marie');
-        $admin->setDateCreation(new \DateTime());
         $admin->setActif(true);
         $manager->persist($admin);
 
@@ -44,7 +43,6 @@ class AppFixtures extends Fixture
         $comptable->setPassword($this->passwordHasher->hashPassword($comptable, 'compta123'));
         $comptable->setNom('Martin');
         $comptable->setPrenom('Jean');
-        $comptable->setDateCreation(new \DateTime());
         $comptable->setActif(true);
         $manager->persist($comptable);
 
