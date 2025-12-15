@@ -251,7 +251,7 @@
         const matchMessage = document.getElementById('match-message');
 
         if (confirm && password !== confirm) {
-            matchMessage.textContent = '❌ Les mots de passe ne correspondent pas';
+            matchMessage.textContent = 'Les mots de passe ne correspondent pas';
             matchMessage.style.color = '#dc3545';
         } else if (confirm && password === confirm) {
             matchMessage.textContent = '✓ Les mots de passe correspondent';
