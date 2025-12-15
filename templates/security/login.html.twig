@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - WorkTogether{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <!-- Logo/Titre -->
+            <div class="text-center mb-4">
+                <h1 class="display-6 fw-bold mb-2">
+                    <i class="bi bi-building"></i> WorkTogether
+                </h1>
+                <p class="text-muted">Gestion de datacenters</p>
+            </div>
+
+            <!-- Carte de login -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-center mb-4">
+                        <i class="bi bi-box-arrow-in-right"></i> Connexion
+                    </h5>
+
+                    <!-- Messages d'erreur -->
+                    {% if error %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-circle"></i> {{ error.messageKey|trans(error.messageData, 'security') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endif %}
+
+                    <!-- Formulaire -->
+                    <form method="post" action="{{ path('login') }}">
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <i class="bi bi-envelope"></i> Email
+                            </label>
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="email" 
+                                name="_username"
+                                value="{{ last_username }}"
+                                required
+                                autofocus
+                                placeholder="user@example.com"
+                            >
+                        </div>
+
+                        <!-- Mot de passe -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="bi bi-key"></i> Mot de passe
+                            </label>
+                            <div class="input-group">
+                                <input 
+                                    type="password" 
+                                    class="form-control" 
+                                    id="password" 
+                                    name="_password"
+                                    required
+                                    placeholder="Votre mot de passe"
+                                >
+                                <button 
+                                    class="btn btn-outline-secondary" 
+                                    type="button" 
+                                    onclick="togglePassword('password')"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Se souvenir de moi -->
+                        <div class="mb-3 form-check">
+                            <input 
+                                type="checkbox" 
+                                class="form-check-input" 
+                                id="remember_me" 
+                                name="_remember_me"
+                            >
+                            <label class="form-check-label" for="remember_me">
+                                Se souvenir de moi
+                            </label>
+                        </div>
+
+                        <!-- Bouton de connexion -->
+                        <button type="submit" class="btn btn-primary w-100 mb-3">
+                            <i class="bi bi-check-circle"></i> Se connecter
+                        </button>
+
+                        <!-- Lien inscription -->
+                        <hr>
+                        <p class="text-center small">
+                            Pas encore de compte ?
+                            <a href="{{ path('register') }}" class="fw-bold">
+                                Créer un compte
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Infos supplémentaires -->
+            <div class="alert alert-info mt-4" role="alert">
+                <h6 class="alert-heading">
+                    <i class="bi bi-info-circle"></i> Informations
+                </h6>
+                <small>
+                    Cette plateforme permet de gérer la location de baies de datacenter.
+                    Connectez-vous avec vos identifiants ou créez un nouveau compte.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (field.type === 'password') {
+            field.type = 'text';
+        } else {
+            field.type = 'password';
+        }
+    }
+</script>
+
+{% endblock %}

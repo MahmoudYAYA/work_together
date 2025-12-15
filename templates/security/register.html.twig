@@ -1,0 +1,264 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - WorkTogether{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <!-- Logo/Titre -->
+            <div class="text-center mb-4">
+                <h1 class="display-6 fw-bold mb-2">
+                    <i class="bi bi-building"></i> WorkTogether
+                </h1>
+                <p class="text-muted">Gestion de datacenters</p>
+            </div>
+
+            <!-- Carte d'inscription -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title text-center mb-4">
+                        <i class="bi bi-person-plus"></i> Créer un compte
+                    </h5>
+
+                    <!-- Messages flash -->
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-circle"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+
+                    <!-- Formulaire d'inscription -->
+                    <form method="post" action="{{ path('register') }}">
+                        <!-- Prénom -->
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">
+                                <i class="bi bi-person"></i> Prénom
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="prenom" 
+                                name="prenom"
+                                required
+                                placeholder="Jean"
+                            >
+                        </div>
+
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">
+                                <i class="bi bi-person-badge"></i> Nom
+                            </label>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="nom" 
+                                name="nom"
+                                required
+                                placeholder="Dupont"
+                            >
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">
+                                <i class="bi bi-envelope"></i> Email
+                            </label>
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="email" 
+                                name="email"
+                                required
+                                placeholder="user@example.com"
+                            >
+                            <small class="form-text text-muted">
+                                Nous n'enverrons pas de spam
+                            </small>
+                        </div>
+
+                        <!-- Mot de passe -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="bi bi-key"></i> Mot de passe
+                            </label>
+                            <div class="input-group">
+                                <input 
+                                    type="password" 
+                                    class="form-control" 
+                                    id="password" 
+                                    name="password"
+                                    required
+                                    minlength="8"
+                                    placeholder="Au moins 8 caractères"
+                                    oninput="checkPasswordStrength()"
+                                >
+                                <button 
+                                    class="btn btn-outline-secondary" 
+                                    type="button" 
+                                    onclick="togglePassword('password')"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <!-- Indicateur de force -->
+                            <div id="strength-meter" class="mt-2" style="display: none;">
+                                <div class="progress">
+                                    <div id="strength-bar" class="progress-bar bg-danger" style="width: 0%"></div>
+                                </div>
+                                <small id="strength-text" class="form-text text-muted">Faible</small>
+                            </div>
+                        </div>
+
+                        <!-- Confirmation mot de passe -->
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label">
+                                <i class="bi bi-key"></i> Confirmer le mot de passe
+                            </label>
+                            <div class="input-group">
+                                <input 
+                                    type="password" 
+                                    class="form-control" 
+                                    id="confirm_password" 
+                                    name="confirm_password"
+                                    required
+                                    placeholder="Confirmez votre mot de passe"
+                                    oninput="checkPasswordMatch()"
+                                >
+                                <button 
+                                    class="btn btn-outline-secondary" 
+                                    type="button" 
+                                    onclick="togglePassword('confirm_password')"
+                                >
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <small id="match-message" class="form-text"></small>
+                        </div>
+
+                        <!-- Conditions d'utilisation -->
+                        <div class="form-check mb-3">
+                            <input 
+                                type="checkbox" 
+                                class="form-check-input" 
+                                id="agree" 
+                                name="agree"
+                                required
+                            >
+                            <label class="form-check-label small" for="agree">
+                                J'accepte les <a href="#" target="_blank">conditions d'utilisation</a>
+                            </label>
+                        </div>
+
+                        <!-- Bouton d'inscription -->
+                        <button type="submit" class="btn btn-primary w-100 mb-3">
+                            <i class="bi bi-person-plus"></i> Créer un compte
+                        </button>
+
+                        <!-- Lien connexion -->
+                        <hr>
+                        <p class="text-center small">
+                            Vous avez déjà un compte ?
+                            <a href="{{ path('login') }}" class="fw-bold">
+                                Se connecter
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Infos supplémentaires -->
+            <div class="alert alert-info mt-4" role="alert">
+                <h6 class="alert-heading">
+                    <i class="bi bi-info-circle"></i> À propos
+                </h6>
+                <small>
+                    WorkTogether est une plateforme de gestion de datacenters.
+                    Inscrivez-vous pour accéder aux services de location de baies.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// GESTIONS DE MOTS DE PASSE 
+
+// afficher ou masauer le mot de passe 
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (field.type === 'password') {
+            field.type = 'text';
+        } else {
+            field.type = 'password';
+        }
+    }
+
+// vérifie la force de mot de passe 
+    function checkPasswordStrength() {
+        const password = document.getElementById('password').value;
+        const strengthBar = document.getElementById('strength-bar');
+        const strengthText = document.getElementById('strength-text');
+        const strengthMeter = document.getElementById('strength-meter');
+
+        strengthMeter.style.display = 'block';
+
+// Cacule la force de mdp 
+        let strength = 0;
+        if (password.length >= 8) strength += 20;
+        if (password.length >= 12) strength += 20;
+        if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength += 20;
+        if (/[0-9]/.test(password)) strength += 20;
+        if (/[^a-zA-Z0-9]/.test(password)) strength += 20;
+
+// METTRE 0 JOUR LA BARRE 
+        strengthBar.style.width = strength + '%';
+        strengthBar.className = 'progress-bar';
+
+// indications des niveaux des force de mot passe 
+        if (strength <= 20) {
+            strengthBar.classList.add('bg-danger');
+            strengthText.textContent = 'Très faible';
+        } else if (strength <= 40) {
+            strengthBar.classList.add('bg-danger');
+            strengthText.textContent = 'Faible';
+        } else if (strength <= 60) {
+            strengthBar.classList.add('bg-warning');
+            strengthText.textContent = 'Moyen';
+        } else if (strength <= 80) {
+            strengthBar.classList.add('bg-info');
+            strengthText.textContent = 'Fort';
+        } else {
+            strengthBar.classList.add('bg-success');
+            strengthText.textContent = 'Très fort';
+        }
+
+        checkPasswordMatch();
+    }
+// vérifie si les deux mots de passe se correspandent
+    function checkPasswordMatch() {
+        const password = document.getElementById('password').value;
+        const confirm = document.getElementById('confirm_password').value;
+        const matchMessage = document.getElementById('match-message');
+
+        if (confirm && password !== confirm) {
+            matchMessage.textContent = '❌ Les mots de passe ne correspondent pas';
+            matchMessage.style.color = '#dc3545';
+        } else if (confirm && password === confirm) {
+            matchMessage.textContent = '✓ Les mots de passe correspondent';
+            matchMessage.style.color = '#198754';
+        } else {
+            matchMessage.textContent = '';
+        }
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord - WorkTogether{% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <!-- ========== EN-TÊTE ========== -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="display-5 fw-bold">
+                <i class="bi bi-speedometer2"></i> Tableau de bord
+            </h1>
+            <p class="text-muted">Bienvenue, {{ user.nomComplet }}</p>
+        </div>
+    </div>
+
+    <!-- ========== CARTES D'INFORMATIONS ========== -->
+    <div class="row mb-4">
+        <!-- Profil -->
+        <div class="col-md-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-person-circle"></i> Vos informations
+                    </h5>
+                    <p class="card-text">
+                        <strong>Email :</strong> {{ user.email }}<br>
+                        <strong>Nom :</strong> {{ user.nomComplet }}<br>
+                        <strong>Statut :</strong>
+                        {% if user.actif %}
+                            <span class="badge bg-success">✓ Actif</span>
+                        {% else %}
+                            <span class="badge bg-danger">✗ Désactivé</span>
+                        {% endif %}
+                    </p>
+                    <a href="{{ path('user_profile') }}" class="btn btn-sm btn-outline-primary mt-2">
+                        <i class="bi bi-pencil"></i> Modifier profil
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rôles et permissions -->
+        <div class="col-md-6 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-shield-lock"></i> Rôles et permissions
+                    </h5>
+                    <p class="card-text">
+                        {% for role in user.roles %}
+                            {% if role == 'ROLE_ADMIN' %}
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-lock"></i> Administrateur
+                                </span>
+                            {% elseif role == 'ROLE_COMPTABLE' %}
+                                <span class="badge bg-info">
+                                    <i class="bi bi-calculator"></i> Comptable
+                                </span>
+                            {% elseif role == 'ROLE_CLIENT' %}
+                                <span class="badge bg-primary">
+                                    <i class="bi bi-briefcase"></i> Client
+                                </span>
+                            {% elseif role == 'ROLE_USER' %}
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-person"></i> Utilisateur
+                                </span>
+                            {% endif %}
+                            <br>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== LIENS RAPIDES ========== -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h5 class="fw-bold mb-3">Actions rapides</h5>
+        </div>
+
+        {% if user.isClient %}
+        <!-- Lien Client : Mes commandes -->
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-receipt display-4 text-primary mb-2" style="display: block;"></i>
+                    <h6 class="card-title">Mes commandes</h6>
+                    <a href="{{ path('commande_list') }}" class="btn btn-sm btn-primary mt-2">
+                        Voir <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lien Client : Mes unités -->
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-box-seam display-4 text-success mb-2" style="display: block;"></i>
+                    <h6 class="card-title">Mes unités</h6>
+                    <a href="{{ path('unite_list') }}" class="btn btn-sm btn-success mt-2">
+                        Voir <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if user.isAdmin %}
+        <!-- Lien Admin : Gérer utilisateurs -->
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-people display-4 text-danger mb-2" style="display: block;"></i>
+                    <h6 class="card-title">Gérer utilisateurs</h6>
+                    <a href="{{ path('admin_users') }}" class="btn btn-sm btn-danger mt-2">
+                        Voir <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lien Admin : Gérer baies -->
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-building display-4 text-warning mb-2" style="display: block;"></i>
+                    <h6 class="card-title">Gérer baies</h6>
+                    <a href="{{ path('admin_baies') }}" class="btn btn-sm btn-warning mt-2">
+                        Voir <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if user.isComptable %}
+        <!-- Lien Comptable : Rapports -->
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-graph-up display-4 text-info mb-2" style="display: block;"></i>
+                    <h6 class="card-title">Rapports</h6>
+                    <a href="{{ path('comptable_rapports') }}" class="btn btn-sm btn-info mt-2">
+                        Voir <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Changement de mot de passe (tous) -->
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-key display-4 text-secondary mb-2" style="display: block;"></i>
+                    <h6 class="card-title">Mot de passe</h6>
+                    <a href="{{ path('user_change_password') }}" class="btn btn-sm btn-secondary mt-2">
+                        Changer <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== INFORMATION SUPPLÉMENTAIRE ========== -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-info-circle"></i> Informations du compte
+                    </h5>
+                    <p class="text-muted small">
+                        <strong>Compte créé le :</strong> {{ user.dateCreation|date('d/m/Y à H:i') }}<br>
+                        <strong>Dernière modification :</strong> {{ user.dateModification|date('d/m/Y à H:i') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
