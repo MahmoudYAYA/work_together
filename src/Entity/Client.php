@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -56,6 +58,17 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'client')]
     private ?Reservation $reservation = null;
+
+    /**
+     * @var Collection<int, TicketSupport>
+     */
+    #[ORM\OneToMany(targetEntity: TicketSupport::class, mappedBy: 'client')]
+    private Collection $ticketSupports;
+
+    public function __construct()
+    {
+        $this->ticketSupports = new ArrayCollection();
+    }
 
     // Getters et Setters existants...
 
@@ -236,6 +249,36 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     public function setReservation(?Reservation $reservation): static
     {
         $this->reservation = $reservation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TicketSupport>
+     */
+    public function getTicketSupports(): Collection
+    {
+        return $this->ticketSupports;
+    }
+
+    public function addTicketSupport(TicketSupport $ticketSupport): static
+    {
+        if (!$this->ticketSupports->contains($ticketSupport)) {
+            $this->ticketSupports->add($ticketSupport);
+            $ticketSupport->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicketSupport(TicketSupport $ticketSupport): static
+    {
+        if ($this->ticketSupports->removeElement($ticketSupport)) {
+            // set the owning side to null (unless already changed)
+            if ($ticketSupport->getClient() === $this) {
+                $ticketSupport->setClient(null);
+            }
+        }
 
         return $this;
     }
