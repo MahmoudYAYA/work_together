@@ -27,6 +27,9 @@ class Reservation
     #[ORM\OneToMany(targetEntity: Client::class, mappedBy: 'reservation')]
     private Collection $client;
 
+    #[ORM\ManyToOne]
+    private ?Unite $unite = null;
+
     public function __construct()
     {
         $this->client = new ArrayCollection();
@@ -87,6 +90,18 @@ class Reservation
                 $client->setReservation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUnite(): ?Unite
+    {
+        return $this->unite;
+    }
+
+    public function setUnite(?Unite $unite): static
+    {
+        $this->unite = $unite;
 
         return $this;
     }
