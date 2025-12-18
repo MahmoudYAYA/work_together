@@ -95,6 +95,12 @@ class Commande
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $dateCreation;
 
+    #[ORM\ManyToOne(inversedBy: 'commandes')]
+    private ?Client $clients = null;
+
+    #[ORM\ManyToOne(inversedBy: 'commande')]
+    private ?Client $clientss = null;
+
     // ===== AJOUT 10 : Constructeur pour initialiser dateCreation =====
     // S'exécute AUTOMATIQUEMENT à la création d'une nouvelle Commande
     // Fixe la date/heure actuelle
@@ -418,5 +424,29 @@ class Commande
     public function getMontantTVAFormate(): string
     {
         return number_format((float)$this->montantTVA, 2, ',', ' ') . ' €';
+    }
+
+    public function getClients(): ?Client
+    {
+        return $this->clients;
+    }
+
+    public function setClients(?Client $clients): static
+    {
+        $this->clients = $clients;
+
+        return $this;
+    }
+
+    public function getClientss(): ?Client
+    {
+        return $this->clientss;
+    }
+
+    public function setClientss(?Client $clientss): static
+    {
+        $this->clientss = $clientss;
+
+        return $this;
     }
 }
