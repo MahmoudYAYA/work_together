@@ -30,7 +30,7 @@
                     {% endif %}
 
                     <!-- Formulaire -->
-                    <form method="post" action="{{ path('login') }}">
+                    <form method="post" action="{{ path('app_login') }}">
                         <!-- Email -->
                         <div class="mb-3">
                             <label for="email" class="form-label">
@@ -84,6 +84,8 @@
                                 Se souvenir de moi
                             </label>
                         </div>
+
+                        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
                         <!-- Bouton de connexion -->
                         <button type="submit" class="btn btn-primary w-100 mb-3">
