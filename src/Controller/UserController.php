@@ -140,15 +140,4 @@ class UserController extends AbstractController
         $this->addFlash('success', 'Mot de passe changé avec succès');
         return $this->redirectToRoute('user_profile');
     }
-
-    /**
-     * POST /user/logout
-     * Déconnecte l'utilisateur (géré par Symfony Security)
-     */
-    #[Route('/logout', name: 'app_logout', methods: ['POST'])]
-    public function logout(): Response
-    {
-        // Symfony gère la déconnexion automatiquement
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
 }

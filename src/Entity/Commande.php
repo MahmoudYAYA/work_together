@@ -42,15 +42,6 @@ class Commande
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateFinService = null;
 
-    // ===== AJOUT 3 : Relation ManyToOne vers Client =====
-    // Une Commande appartient à UN Client
-    // Un Client peut avoir PLUSIEURS Commandes
-    // inversedBy='commandes' = le Client a une collection 'commandes'
-    // nullable: false = une commande DOIT avoir un client (obligatoire)
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'commandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Client $client = null;
-
     // ===== AJOUT 4 : Relation ManyToOne vers Offre =====
     // Une Commande est associée à UNE Offre (Base, Start-up, PME, Entreprise)
     // Plusieurs Commandes peuvent utiliser la même Offre
@@ -97,9 +88,6 @@ class Commande
 
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?Client $clients = null;
-
-    #[ORM\ManyToOne(inversedBy: 'commande')]
-    private ?Client $clientss = null;
 
     // ===== AJOUT 10 : Constructeur pour initialiser dateCreation =====
     // S'exécute AUTOMATIQUEMENT à la création d'une nouvelle Commande
@@ -202,17 +190,6 @@ class Commande
     }
 
     // ============ AJOUT 11 : GETTERS POUR LES NOUVELLES RELATIONS ============
-
-    public function getClient(): ?Client
-    {
-        return $this->client;
-    }
-
-    public function setClient(?Client $client): self
-    {
-        $this->client = $client;
-        return $this;
-    }
 
     public function getOffre(): ?Offre
     {
@@ -434,18 +411,6 @@ class Commande
     public function setClients(?Client $clients): static
     {
         $this->clients = $clients;
-
-        return $this;
-    }
-
-    public function getClientss(): ?Client
-    {
-        return $this->clientss;
-    }
-
-    public function setClientss(?Client $clientss): static
-    {
-        $this->clientss = $clientss;
 
         return $this;
     }

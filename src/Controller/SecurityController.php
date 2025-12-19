@@ -24,7 +24,7 @@ class SecurityController extends AbstractController
      * GET /login
      * Affiche la page de connexion
      */
-    #[Route('/login', name: 'login', methods: ['GET', 'POST'])]
+    #[Route('/login', name: 'app_login', methods: ['GET', 'POST'])]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // Si l'utilisateur est déjà connecté, redirigez-le
@@ -113,7 +113,7 @@ class SecurityController extends AbstractController
      * POST /logout
      * Déconnecte l'utilisateur (géré par Symfony Security)
      */
-    #[Route('/logout', name: 'logout', methods: ['POST'])]
+    #[Route('/logout', name: 'app_logout', methods: ['GET'])]
     public function logout(): Response
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

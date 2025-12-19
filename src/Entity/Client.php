@@ -71,17 +71,10 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'clients')]
     private Collection $commandes;
 
-    /**
-     * @var Collection<int, Commande>
-     */
-    #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'clientss')]
-    private Collection $commande;
-
     public function __construct()
     {
         $this->ticketSupports = new ArrayCollection();
         $this->commandes = new ArrayCollection();
-        $this->commande = new ArrayCollection();
     }
 
     // Getters et Setters existants...
@@ -325,13 +318,5 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommande(): Collection
-    {
-        return $this->commande;
     }
 }
