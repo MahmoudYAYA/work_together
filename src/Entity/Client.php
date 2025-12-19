@@ -77,6 +77,7 @@ class Client implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commandes = new ArrayCollection();
     }
 
+
     // Getters et Setters existants...
 
     public function getId(): ?int
